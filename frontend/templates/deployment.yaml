@@ -23,13 +23,12 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: joindevops/frontend:{{.Values.deployment.version }}
+          image: expense-frontend:{{ .Values.deployment.version }}
           volumeMounts:
             - name: nginx-conf
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
               readOnly: true
-
       volumes:
         - name: nginx-conf
           configMap:
