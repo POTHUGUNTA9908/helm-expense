@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: expense
+  labels:
+    app: frontend
+    tier: frontend
+    project: expense
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+      tier: frontend
+      project: expense
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: frontend
+        project: expense
+    spec:
+      containers:
+        - name: frontend
+          image: joindevops/frontend:{{.Values.deployment.version }}
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx
+            items:
+              - key: nginx.conf
+                path: nginx.conf
